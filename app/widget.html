@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Nuestro script, que se encarga de crear el PDF usando la librería <span style="color: red;"> (UNIDAD OPERATIVA)</span> -->
+  <script src="js/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="CSS/Stylemain.css">
+  <title>Proforma</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <button id="btnCrearPdf" v-on:click="GenerarPDf">Descargar PDF</button>
+    <div id="element">
+      <section>
+        <div class="fon">
+          <header>
+            <div><img src="Images/logo-rts.png" alt="">
+              <p class="fecha">Lima, 31 de agosto de 2021</p>
+            </div>
+          </header>
+          <p>Señores.</p>
+          <h3>NEXA RESOURCES EL PORVENIR S.A.C. </h3>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold; width: 200px;">Atención:</td>
+                <td>
+                  {{Seccion_cliente.Nombre_Cliente}}
+                  <br>
+                  {{Seccion_cliente.Cargocliente}}
+                </td>
+              </tr>
+            </tbody>
+          </table> <br>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold;  width: 200px;">Referencia:</td>
+                <td>Licitación SOZN893 Paquete 02 - Automatización de Planta - El Porvenir</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold;  width: 200px;">Ref. RTS:</td>
+                <td>1-19-2-0060 Rev2</td>
+              </tr>
+            </tbody>
+          </table> <br>
+
+          <p>Estimado (a) Sr(ta). Solari,</p>
+          <p>Thank you for your request and interest in VEGA products and solutions. Based upon the information
+            provided, we are pleased to present the following offer. </p>
+
+          <p>The total for this quotation, not including shipping and handling, is USD {{Seccion_cotizacion.Grantota_l}}. The lead time for the
+            equipment is eight (8) weeks after receipt of order. </p>
+
+          <p>Please review this offer and contact us if you have any questions or concerns. If you would like to submit
+            an order, please submit your purchase order to our orders received inbox at ordenes@rts-auto.com.</p> <br>
+
+          <p>Regards,</p><br>
+
+          <p>Fiorella Zacarias <br>
+            Jefe de Ventas Internas</p>
+        </div>
+        <!--
+        <div class="pie-pagina">
+          <table border="0">
+            <tbody>
+              <tr>
+                <td>51 1 628 0090</td>
+                <td>ventas@rts-auto.com</td>
+                <td>rtsautomation</td>
+              </tr>
+
+              <tr>
+                <td>Jr. Huaraz  1882 - Breña</td>
+                <td>servicios@rts-auto.com</td>
+                <td>www.rts-auto.com</td>
+              </tr>
+            </tbody>
+          </table> <br>
+        </div>
+        -->
+        <div class="html2pdf__page-break"></div>
+
+     
+        <div class="fon">
+          <header style="margin-top: 5% !important; ">
+            <div><img src="Images/logo-rts.png" alt=""></div>
+          </header>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td>Lima, 31 de agosto de 2021 </td>
+                <td style="text-align: right;">Nro. Cotización: 1-19-2-0060 Rev 02</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <table border="1">
+            <thead style="font-size: 14px;">
+              <tr>
+                <th style="width: 30px;">It</th>
+                <th>Cant.</th>
+                <th>Descripción</th>
+                <th style="width: 100px; text-align: right;">Precio Unitario USD</th>
+                <th style="width: 100px; text-align: right;">Precio Total USD</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 14px; border-bottom: 1" v-for="(data_item, index) of Array_Data">
+              <tr>
+                <td style="text-align: center;">{{index+1}}</td>
+                <td style="text-align: center;">{{data_item.quantity}}</td>
+                <td>{{data_item.SUBCATEGORIA}}<span style="color: red;"></span></td>
+                <td style="text-align: right;">{{data_item.Precio_de_venta}}</td>
+                <td style="text-align: right;">{{data_item.TotalFinal}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MARCA</td>
+                <td colspan="2">{{data_item.MARCA}}</span></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MODELO</td>
+                <td colspan="2">{{data_item.MODELO}}</td>
+              </tr>
+              <tr v-if="data_item.especif_1.length !== 0 || data_item.especif_2.length !== 0 || data_item.especif_3.length !== 0 || data_item.especif_4.length !== 0">
+                <th style="width: 40px;"></th>
+                <th style="width: 40px;"></th>
+                <th style="text-align: left;">Especificaciones:</th>
+                <th></th>
+              </tr>
+              <tr v-if="data_item.especif_1.length !== 0">
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>{{data_item.especif_1}}</td>
+                <td style="width: 350px;">: &nbsp;&nbsp;{{data_item.especif_1a}} </td>
+              </tr>
+              <tr v-if="data_item.especif_2.length !== 0">
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>{{data_item.especif_2}}</td>
+                <td style="width: 350px;">: &nbsp;&nbsp;{{data_item.especif_2b}}</td>
+              </tr>
+              <tr v-if="data_item.especif_3.length !== 0">
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>{{data_item.especif_3}}</td>
+                <td style="width: 350px;">: &nbsp;&nbsp;{{data_item.especif_3c}}</td>
+              </tr>
+              <tr v-if="data_item.especif_4.length !== 0" class="border-especificaciones">
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>{{data_item.especif_4}}</td>
+                <td style="width: 350px;">: &nbsp;&nbsp;{{data_item.especif_4d}}</td>
+              </tr>
+            </tbody>
+            <!--
+            <thead class="border-especificaciones" v-if="data_item.SUBCATEGORIA.length !== 0" style="font-size: 13px;" v-for="(data_item) of Array_Data">
+                <tr>
+                  <th style="width: 40px;"></th>
+                  <th style="width: 40px;"></th>
+                  <th style="text-align: left;">Especificaciones:</th>
+                  <th></th>
+                </tr>
+                <tr v-if="data_item.especif_1.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 1</td>
+                  <td style="width: 300px;">{{data_item.especif_1}}</td>
+                </tr>
+                <tr v-if="data_item.especif_1a.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 2</td>
+                  <td style="width: 300px;">{{data_item.especif_1a}}</td>
+                </tr>
+                <tr v-if="data_item.especif_2.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 3</td>
+                  <td style="width: 300px;">{{data_item.especif_2}}</td>
+                </tr>
+                <tr v-if="data_item.especif_2b.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 4</td>
+                  <td style="width: 300px;">{{data_item.especif_2b}}</td>
+                </tr>
+                <tr v-if="data_item.especif_3.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 5</td>
+                  <td style="width: 300px;">{{data_item.especif_3}}</td>
+                </tr>
+                <tr v-if="data_item.especif_3c.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 6</td>
+                  <td style="width: 300px;">{{data_item.especif_3c}}</td>
+                </tr>
+                <tr v-if="data_item.especif_4.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 7</td>
+                  <td style="width: 300px;">{{data_item.especif_4}}</td>
+                </tr>
+                <tr v-if="data_item.especif_4d.length !== 0">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;"></td>
+                  <td>Especificación 8</td>
+                  <td style="width: 300px;">{{data_item.especif_4d}}</td>
+                </tr>
+            </thead>
+          -->
+              <!--<tr v-if="data_item.Description.length !== 0" class="border-especificaciones">
+                <td></td>
+                <td></td>
+                <td>Especificaciones</td>
+                <td></td>
+                <td colspan="2">{{data_item.Description}}</td>
+                
+                        <th style="width: 40px;"></th>
+                        <th style="width: 40px;"></th>
+                        <th style="text-align: left;">Especificaciones:</th>
+                        <th></th>
+                        
+              </tr>-->
+            
+            <!--
+                    <thead>
+                      <tr>
+                        <th style="width: 40px;"></th>
+                        <th style="width: 40px;"></th>
+                        <th style="text-align: left;">Especificaciones:</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    
+                    <tbody  style="font-size: 14px;">
+                      <tr>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td>Material y protección de cuerpo:</td>
+                        <td>Aluminio fundido - Nema 4 / 4X</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td>Conexión eléctrica:</td>
+                        <td>¾" NPT Estándar</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td>Salida de contactos:</td>
+                        <td>2 SPDT Micro Switches 20A @ 125, 250 ó 480 VAC</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td>Recubrimiento</td>
+                        <td>No</td>
+                      </tr>
+                    </tbody>
+                    -->
+          </table> <br>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td colspan="3" style="font-weight: bold; text-align: right;">TOTAL (PRECIO LOCAL, NO INCLUYE IGV)</td>
+                <td style="text-align: right;">USD</td>
+                <td style="text-align: right;">{{Seccion_cotizacion.Grantota_l}}</td>
+              </tr>
+            </tbody>
+          </table> <br>
+          <!--
+              <table border="1">
+                <thead>
+                    <tr>
+                      <th style="width: 40px;"></th>
+                      <th style="width: 40px;"></th>
+                      <th style="text-align: left;">Especificaciones:</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody  style="font-size: 14px;">
+                    <tr>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;"></td>
+                      <td>Material y protección de cuerpo:</td>
+                      <td>Aluminio fundido - Nema 4 / 4X</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;"></td>
+                      <td>Conexión eléctrica:</td>
+                      <td>¾" NPT Estándar</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;"></td>
+                      <td>Salida de contactos:</td>
+                      <td>2 SPDT Micro Switches 20A @ 125, 250 ó 480 VAC</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;"></td>
+                      <td>Recubrimiento</td>
+                      <td>No</td>
+                    </tr>
+                  </tbody>
+            </table> <br>
+            
+
+            <table border="1">
+                <tbody  style="font-size: 14px;">
+                  <tr>
+                    <td style="text-align: center; width: 40px;">02</td>
+                    <td style="text-align: center; width: 40px;">10</td>
+                    <td style="width: 316px;">Perno ojal de conexión con perno para soporte de cable,
+                      incluye 2 tuercas y 1 arandela<span style="color: red;">  (DESCRIPCION GENERAL) </span></td>
+                    <td style="text-align: right;">12.00</td>
+                    <td style="text-align: right;">120.00</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>MARCA</td>
+                    <td colspan="2">CONVEYOR COMPONENTS <span style="color: red;"> (MARCA)</span></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>MODELO</td>
+                    <td colspan="2">RS-25 <span style="color: red;">(NUMERO DE PARTE DEL PROVEEDOR)</span></td>
+                  </tr>
+                </tbody>
+          </table> <br>
+          <table border="1">
+            <tbody  style="font-size: 14px;">
+              <tr>
+                <td style="text-align: center; width: 40px;">03</td>
+                <td style="text-align: center; width: 40px;">03</td>
+                <td style="width: 316px;">INTERRUPTOR DESALINEAMIENTO DE FAJA</td>
+                <td style="text-align: right;">280.00</td>
+                <td style="text-align: right;">840.00</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MARCA</td>
+                <td colspan="2">CONVEYOR COMPONENTS</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MODELO</td>
+                <td colspan="2">TA-2</td>
+              </tr>
+            </tbody>
+      </table> <br>
+
+                    <table border="1">
+                      <thead  style="font-size: 14px;">
+                          <tr>
+                            <th style="width: 40px;"></th>
+                            <th style="width: 40px;"></th>
+                            <th style="text-align: left; font-size: 14px;">Especificaciones:</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody >
+                          <tr>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td>Material y protección de cuerpo:</td>
+                            <td>Aluminio fundido - Nema 4 / 4X</td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td>Conexión eléctrica:</td>
+                            <td>¾" NPT Estándar</td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td>Salida de contactos:</td>
+                            <td>2 SPDT Micro Switches 20A @ 125, 250 ó 480 VAC</td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td>Recubrimiento</td>
+                            <td>No</td>
+                          </tr>
+                        </tbody>
+                  </table> <br>
+                  <table border="1">
+                    <tbody  style="font-size: 14px;">
+                      <tr>
+                        <td style="text-align: center; width: 40px;">04</td>
+                        <td style="text-align: center; width: 40px;">02</td>
+                        <td style="width: 316px;">INTERRUPTOR RUPTURA DE FAJA</td>
+                        <td style="text-align: right;">350.00</td>
+                        <td style="text-align: right;">700.00</td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>MARCA</td>
+                        <td colspan="2">CONVEYOR COMPONENTS</td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>MODELO</td>
+                        <td colspan="2">TA-2</td>
+                      </tr>
+                    </tbody>
+                  </table> <br>
+
+                  
+                  <table border="1">
+                    <thead >
+                        <tr>
+                          <th style="width: 40px;"></th>
+                          <th style="width: 40px;"></th>
+                          <th style="text-align: left; font-size: 14px; ">Especificaciones:</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-size: 14px;">
+                        <tr>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;"></td>
+                          <td>Material y protección de cuerpo:</td>
+                          <td>Aluminio fundido - Nema 4 / 4X</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;"></td>
+                          <td>Conexión eléctrica:</td>
+                          <td>¾" NPT Estándar</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;"></td>
+                          <td>Salida de contactos:</td>
+                          <td>2 SPDT Micro Switches 20A @ 125, 250 ó 480 VAC</td>
+                        </tr>
+                        <tr>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;"></td>
+                          <td>Recubrimiento</td>
+                          <td>No</td>
+                        </tr>
+                      </tbody>
+                </table> <br>
+              -->
+          <!--<div class="pie-pagina">
+                  <table border="0" style="margin: 1% 5%;">
+                    <tbody>
+                      <tr>
+                        <td>51 1 628 0090</td>
+                        <td>ventas@rts-auto.com</td>
+                        <td>rtsautomation</td>
+                      </tr>
+
+                      <tr>
+                        <td>Jr. Huaraz  1882 - Breña</td>
+                        <td>servicios@rts-auto.com</td>
+                        <td>www.rts-auto.com</td>
+                      </tr>
+                    </tbody>
+                </table> <br>
+              </div>-->
+          
+        </div>
+        <div class="html2pdf__page-break"></div>
+    
+
+        <!--
+        <div class="fondo">
+          <header style="margin-top: 5% !important; ">
+            <div><img src="Images/logo-rts.png" alt=""></div>
+          </header>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td>Lima, 31 de agosto de 2021 </td>
+                <td style="text-align: right;">Nro. Cotización: 1-19-2-0060 Rev 02</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <table border="0">
+            <thead>
+              <tr>
+                <th style="width: 40px;">It</th>
+                <th>Cant.</th>
+                <th style="width: 346px;"></th>
+                <th style="text-align: right;">Precio Unitario USD</th>
+                <th style="text-align: right;">Precio Total USD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center;">04</td>
+                <td style="text-align: center;">02</td>
+                <td>INTERRUPTOR PARADA DE EMERGENCIA </td>
+                <td style="text-align: right;">350.00</td>
+                <td style="text-align: right;">700.00</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MARCA</td>
+                <td colspan="2">CONVEYOR COMPONENTS <span style="color: red;"> (MARCA)</span></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>MODELO</td>
+                <td colspan="2">RS-2 <span style="color: red;">(NUMERO DE PARTE DEL PROVEEDOR)</span></td>
+              </tr>
+            </tbody>
+          </table> <br>
+
+          <table border="0">
+            <thead>
+              <tr>
+                <th style="width: 40px;"></th>
+                <th style="width: 40px;"></th>
+                <th style="text-align: left;">Especificaciones:</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>Material y protección de cuerpo:</td>
+                <td>Aluminio fundido - Nema 4 / 4X</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>Conexión eléctrica:</td>
+                <td>¾" NPT Estándar</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>Contactos:</td>
+                <td>2 SPDT Micro Switches 20A @ 125, 250 ó 480 VAC</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>Temperatura de operación</td>
+                <td>-40 a 65.6°C</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td>Recubrimiento</td>
+                <td>No</td>
+              </tr>
+            </tbody>
+          </table> <br>
+
+          <table border="0">
+            <tbody>
+              <tr>
+                <td colspan="3" style="font-weight: bold; text-align: right;">TOTAL (PRECIO LOCAL, NO INCLUYE IGV)</td>
+                <td style="text-align: right;">USD</td>
+                <td style="text-align: right;">2, 940.00</td>
+              </tr>
+            </tbody>
+          </table> <br>
+          <div class="pie-pagina">
+                <table border="0" style="margin: 1% 5%;">
+                  <tbody>
+                    <tr>
+                      <td>51 1 628 0090</td>
+                      <td>ventas@rts-auto.com</td>
+                      <td>rtsautomation</td>
+                    </tr>
+
+                    <tr>
+                      <td>Jr. Huaraz  1882 - Breña</td>
+                      <td>servicios@rts-auto.com</td>
+                      <td>www.rts-auto.com</td>
+                    </tr>
+                  </tbody>
+              </table> <br>
+            </div>
+          <div class="html2pdf__page-break"></div>
+        </div>
+      -->
+        <div class="fon">
+          <header style="margin-top: 5% !important; ">
+            <div><img src="Images/logo-rts.png" alt=""></div>
+          </header>
+          <h1 style="text-align: center;">CONDICIONES GENERALES DE VENTA</h1>
+          <h3 style="text-align: center;">PEDIDO LOCAL</h3>
+          <br>
+          <table border="0">
+            <tbody>
+              <tr>
+                <td style="text-align: left;">Fecha</td>
+                <td style="text-align: left;">31 de agosto de 2021</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Nro. Cotización</td>
+                <td style="text-align: left;">1-19-2-0060 Rev02</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Precios</td>
+                <td style="text-align: left;">Son netos y se entienden en DÓLARES AMERICANOS, válido únicamente por la
+                  cantidad indicada en la propuesta, de variar cantidades solicitar una actualización a la oferta.</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Documentación</td>
+                <td style="text-align: left;">No incluye información/certificados no especificados en la descripción.
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Forma de pago</td>
+                <td style="text-align: left;">Factura 30 días</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Validez de la oferta</td>
+                <td style="text-align: left;">30 días.</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;" colspan="2">Lugar de entrega sus almacenes en Lima</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Tiempo de entrega</td>
+                <td style="text-align: left;">Indicado en cada ítem.</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">Garantía</td>
+                <td style="text-align: left;">1 año.</td>
+              </tr>
+            </tbody>
+          </table> <br>
+
+          <h3>Nota:</h3>
+          <p>Mayor detalle de las condiciones de venta favor de ver “TERMINOS Y CONDICIONES GENERALES DE VENTA” que se
+            encuentra adjunto.</p> <br>
+
+          <p>Quedo a la espera de sus gratas noticias.</p> <br>
+
+          <table border="0" style="font-size: 13px">
+            <tbody>
+              <tr>
+                <td style="text-align: center;">Fiorella Zacarias Casas</td>
+                <td style="text-align: center;">Fernando Rodriguez Vásquez</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">RTS AUTOMATION S.A.C.</td>
+                <td style="text-align: center;">RTS AUTOMATION S.A.C.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">Telf : +51 016 280 090</td>
+                <td style="text-align: center;">Telf : +51 016 280 090</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">Móvil: 989 241 659</td>
+                <td style="text-align: center;">Móvil: 997 560 138</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">E-mail:<span style="color: #2196f3"> fzacarias@rts-auto.com</span></td>
+                <td style="text-align: center;">E-mail:<span style="color: #2196f3;"> frodriguez@rts-auto.com</span>
+                </td>
+              </tr>
+            </tbody>
+          </table> <br>
+          <!--<div class="pie-pagina">
+                    <table border="0" style="margin: 1% 5%;">
+                      <tbody>
+                        <tr>
+                          <td>51 1 628 0090</td>
+                          <td>ventas@rts-auto.com</td>
+                          <td>rtsautomation</td>
+                        </tr>
+
+                        <tr>
+                          <td>Jr. Huaraz  1882 - Breña</td>
+                          <td>servicios@rts-auto.com</td>
+                          <td>www.rts-auto.com</td>
+                        </tr>
+                      </tbody>
+                  </table> <br>
+                </div>-->
+
+
+          
+        </div>
+        <div class="html2pdf__page-break"></div>
+
+        <div class="fon-1">
+          <header style="margin-top: 5% !important; ">
+            <div><img src="Images/logo-rts.png" alt="">
+            </div>
+          </header>
+          <h1 style="text-align: center;">TÉRMINOS Y CONDICIONES GENERALES DE VENTA</h1>
+          <table border="1">
+            <tbody>
+              <tr>
+                <td>
+                  <p class="text-t">El presente documento contiene los términos y condiciones que regularán la venta de
+                    equipos realizada por RTS AUTOMATION S.A.C., (en adelante RTS), incluyendo el software y el hardware
+                    suministrados para asegurar el funcionamiento regular de los productos vendidos y/o prestados, así
+                    como las correspondientes licencias, a los que en adelante se denominará
+                    <span style="font-weight: bold;">TÉRMINOS Y CONDICIONES:</span>
+                  </p>
+                  <p class="text-t">
+                    1. Fecha de entrega y documentos suministrados: Los plazos de entrega de
+                    equipos son aproximados, y están en relación a la recepción por parte de RTS,
+                    en debido tiempo y forma de la información requerida para procesar la Orden
+                    de Compra entregada por el Comprador. El Comprador entregará la
+                    documentación referida en la respectiva Orden de Compra. Si se necesitara
+                    información adicional y/o documentación faltante, ésta deberá ser
+                    proporcionada a RTS. En estos casos, la fecha de entrega de equipos por parte
+                    de RTS comenzará a computarse desde la recepción efectiva de la
+                    documentación requerida para procesar la Orden de Compra.
+                  </p>
+                  <p class="text-t">
+                    2. Entrega con atraso: RTS no será responsable por retrasos o imposibilidad
+                    de entrega de equipos a tiempo de una Orden de Compra, debidos a caso
+                    fortuito y/o fuerza mayor, por ejemplo huelgas, disposiciones del gobierno,
+                    leyes, regulaciones, fenómenos naturales y cualquier otra situación que se
+                    encuentre fuera del control de RTS.
+                  </p>
+                  <p class="text-t">3. Validez de la Oferta: Los precios y las condiciones comerciales de esta oferta
+                    son válidos para una compra global según la descripción del alcance de la provisión. En el caso de
+                    requerir comprar parcialmente, los precios podrían sufrir modificaciones. Considerando las
+                    condiciones descritas, esta oferta es válida por un periodo de 30 (treinta) días a partir de la
+                    fecha de entrega y serán válidos exclusivamente para la presente oferta.</p>
+                  <p class="text-t">4. Condiciones de entrega: En vuestros almacenes de Lima – Perú ó conforme lo
+                    indicado en nuestro presupuesto.</p>
+                  <p class="text-t">
+                    5. Embalaje: El equipamiento objeto de la presente oferta será embalado para
+                    ser trasladado por transporte terrestre y/o aéreo, de acuerdo con las
+                    condiciones generales de suministro. El precio de dicho embalaje se
+                    encuentra incluido. No estamos considerando inspecciones antes de
+                    embarque de los equipos.
+                  </p>
+                  <p class="text-t">6. Instalación: El Comprador es responsable de recibir, almacenar, instalar, poner
+                    en funcionamiento y mantener los productos vendidos por RTS. RTS presupuestará, a solicitud del
+                    Comprador, los servicios para asistir al Comprador en las tareas descritas anteriormente.</p>
+
+                  <p class="text-t"> 7. Cancelación o suspensión de compra: En caso de que el Comprador cancele el
+                    Contrato u Orden de Compra éste deberá notificar por escrito a RTS y cubrir todos los gastos en que
+                    hubiera incurrido RTS hasta el momento de recibir dicha notificación.
+                  </p>
+                  <p class="text-t">8. Precios: Los precios ofertados son fijos y están expresados en dólares
+                    estadounidenses, euros, nuevos soles o conforme lo indicado en nuestro presupuesto. Los precios
+                    presupuestados por RTS se expresarán netos sin I.G.V. (18%) ni cualquier otro impuesto que pudiera
+                    ser creado en el futuro, salvo que se mencione expresamente en la oferta enviada a potenciales
+                    Compradores. La liquidación a Nuevos Soles Peruanos se realizará a la Tasa de Cambio Oficial <span
+                      style="font-weight: bold;">vigente del día de facturación.</span>
+                  </p>
+                  <p class="text-t">
+                    9. Penalidad por mora en atraso de cumplimiento de pago: El atraso en el
+                    pago de la retribución económica determinará automática constitución en
+                    mora del cliente, de manera tal que deberá pagar una penalidad equivalente
+                    al 0.1% por día de atraso del valor venta de la factura hasta un máximo del
+                    10% del total de factura.
+                  </p>
+                  <p class="text-t">
+                    10. Facturación de los productos: No se acepta por ningún motivo salvo
+                    expresa aceptación en la propuesta que la facturación de los productos
+                    entregados se relacione con algún tipo de servicio involucrado.
+                    Adicionalmente se considera que se podrá realizar la facturación por entregas
+                    parciales salvo caso que se indique lo contrario en la propuesta.
+                  </p>
+                  <p class="text-t">
+                    <span style="font-weight: bold;">CONDICIONES DE GARANTÍA</span>
+                    En lo que concierne a la garantía de la provisión, los siguientes puntos serán considerados:
+                  </p>
+
+                </td>
+                <td>
+                  <p class="text-t">a. La garantía para el equipamiento suministrado cubre un período de doce (12) meses
+                    a partir de la fecha de la entrega de los
+                    equipos en el almacén del cliente. Para el caso de productos
+                    como electrodos, membranas o similares la garantía es de
+                    noventa (90) días calendarios computados desde la entrega.</p>
+                  <p class="text-t">
+                    b. La garantía no cubre averías o defectos resultantes del uso
+                    incorrecto o abusivo del equipo.
+                  </p>
+                  <p class="text-t">
+                    c. No se incluye en la garantía los suministros o materiales consumibles.
+                  </p>
+                  <p class="text-t">
+                    d. La garantía cubrirá la reparación y/o reemplazo de los componentes involucrados.
+                  </p>
+                  <p class="text-t">
+                    e. Para la ejecución de la garantía los equipos deben ser entregados
+                    en nuestros almacenes de Lima.
+                  </p>
+                  <p class="text-t">
+                    f. RTS no será responsable por los daños sufridos en la
+                    productividad del Comprador. En cualquier caso,
+                    independientemente de la causa que hubiese originado el
+                    reclamo de cumplimiento de garantía, la responsabilidad de RTS
+                    no excederá por ningún motivo el precio pagado por el
+                    Comprador del producto que origina el reclamo. Es decir, la
+                    responsabilidad de RTS no incluirá potenciales reclamos de lucro
+                    cesante, falta de uso del producto o cualquier otro daño o
+                    pérdida.
+                  </p>
+                  <p class="text-t">
+                    g. En caso que el cliente requiera la desinstalación, desarmado,
+                    reinstalación, flete y cualquier otro gasto hecho por RTS será a
+                    cuenta del Comprador.
+                  </p>
+                  <p class="text-t">
+                    h. Los productos reparados o piezas reemplazadas durante la
+                    presente garantía tendrán una garantía adicional, que se
+                    extenderá hasta la fecha de expiración de la garantía existente
+                    sobre el equipo vendido o un periodo de noventa (90) días; de
+                    ambas alternativas, la garantía aplicable será la que otorgue
+                    mayor plazo.
+                  </p>
+                  <p class="text-t">
+                    i. En caso exista diferencia entre los requisitos de especificaciones,
+                    información, declaraciones de condiciones operativas y cualquier
+                    otra información suministrada por escrito por el Comprador a RTS
+                    para la elección y diseño del equipo y la preparación de la
+                    propuesta técnico económica y las condiciones reales de
+                    operación u otras condiciones, queda establecido que cualquier
+                    garantía o cláusula de este contrato u Orden de Compra afectado
+                    por dicha diferencia será considerado nulo y sin efecto salvo
+                    acuerdo por escrito en contrario de las partes. En este caso la
+                    nulidad de las cláusulas afectadas no afecta la validez de las
+                    demás cláusulas del contrato.
+                  </p>
+                  <p class="text-t">
+                    j. Se perderá el derecho a la garantía en caso se hayan producido
+                    las siguientes circunstancias:
+                  <ul>
+                    <li class="text-t">Modificación de las características técnicas originales del
+                      equipo y/o instalación o modificación de piezas de forma
+                      no autorizada por RTS o almacenamiento inadecuado.
+                    </li>
+                    <li class="text-t">
+                      Reparación o mantenimiento preventivo indebido
+                      realizado por personal ajeno a RTS.
+                    </li>
+                    <li class="text-t">
+                      Inobservancia por el comprador de las prescripciones
+                      relativas a la utilización y mantenimiento indicadas en los
+                      manuales de equipos, reporte de servicios u otros
+                      entregados al cliente por el fabricante o RTS.
+                    </li>
+                    <li class="text-t">Si el comprador no ha comunicado por escrito de la avería o falla dentro de un
+                      periodo de 30 días contabilizados a partir de su detección.</li>
+                  </ul>
+                  </p>
+
+                  <p class="text-t"><span style="font-weight: bold;">NOTAS:</span> <br>
+                    a. Favor de indicar en sus comunicaciones el número de esta oferta.
+                    b. En caso de ser favorecidos con su Orden de Compra favor de enviarlo por
+                    email: <span style="color: #2196f3;"> ordenes@rts-auto.com </span> <br>
+                    c. RTS verificará los datos técnicos - comerciales de su Orden de Compra y
+                    enviará un documento de aceptación o pedido de revisión antes de proceder
+                    a procesar la Orden de Compra.</p>
+
+                  <p class="text-t">
+                    <span style="font-weight: bold;">Datos de RTS</span>
+                    RTS AUTOMATION S.A.C. / RUC: 20374246179 <br>
+                    <span style="font-weight: bold;">Banco: ScotiaBank</span> <br>
+                    Cuenta Soles : 000-5279615 CCI 00922300000527961598<br>
+                    Cuenta Dólares : 000-1718151 CCI 00922300000171815192<br>
+                    <span style="font-weight: bold;">Banco: Banco de Crédito del Perú</span><br>
+                    Cuenta Soles : 193-1939580-0-16 CCI 00219300193958001612<br>
+                    Cuenta Dólares : 193-1361166-1-60 CCI 00219300136116616017<br>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table> <br>
+        </div>
+        <div class="pie-pagina">
+          <table border="0" style="margin: 1% 5%;">
+            <tbody>
+              <tr>
+                <td>51 1 628 0090</td>
+                <td>ventas@rts-auto.com</td>
+                <td>rtsautomation</td>
+              </tr>
+
+              <tr>
+                <td>Jr. Huaraz  1882 - Breña</td>
+                <td>servicios@rts-auto.com</td>
+                <td>www.rts-auto.com</td>
+              </tr>
+            </tbody>
+        </table> <br>
+      </div>
+      </section>
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://live.zwidgets.com/js-sdk/1.1/ZohoEmbededAppSDK.min.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    function validar() {
+      if ($('#txtrut').val().length == 0) {
+        alert('Ingrese rut');
+        return false;
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
